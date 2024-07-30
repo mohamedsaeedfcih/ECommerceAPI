@@ -1,16 +1,61 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using ECommerceAPI.Models;
+using ECommerceAPI.Services;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace ECommerceAPI.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class ProductsController : ControllerBase
 {
-    public class ProductsController : Controller
+    private readonly IProductService _productService;
+
+    public ProductsController(IProductService productService)
     {
-        public IActionResult Index()
+        _productService = productService;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+    {
+        var products = await _productService.GetProductsAsync();
+        return Ok(products);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Product>> GetProduct(int id)
+    {
+        var product = await _productService.GetProductByIdAsync(id);
+        if (product == null)
         {
-            return View();
+            return NotFound();
         }
+        return Ok(product);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Product>> AddProduct(Product product)
+    {
+        await _productService.AddProductAsync(product);
+        return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProduct(int id, Product product)
+    {
+        if (id != product.Id)
+        {
+            return BadRequest();
+        }
+
+        await _productService.UpdateProductAsync(product);
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        await _productService.DeleteProductAsync(id);
+        return NoContent();
     }
 }

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ECommerceAPI.Models;
 using System.Threading.Tasks;
 
-namespace ECommerceAPI.Services
+public interface IUserService
 {
-    interface IUserService
-    {
-    }
+    Task<User> RegisterAsync(RegisterRequest request);
+    Task<User> LoginAsync(LoginRequest request);
+    Task<User> GetUserByIdAsync(int id);
 }

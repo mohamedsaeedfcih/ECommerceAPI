@@ -1,11 +1,10 @@
-﻿using System;
+﻿using ECommerceAPI.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace ECommerceAPI.Services
+public interface IOrderService
 {
-    interface IOrderService
-    {
-    }
+    Task<IEnumerable<Order>> GetOrdersByUserIdAsync(int userId);
+    Task<Order> GetOrderByIdAsync(int id);
+    Task AddOrderAsync(Order order);
 }

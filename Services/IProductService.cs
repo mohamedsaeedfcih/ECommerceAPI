@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ECommerceAPI.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace ECommerceAPI.Services
+public interface IProductService
 {
-    interface Interface
-    {
-    }
+    Task<IEnumerable<Product>> GetProductsAsync();
+    Task<Product> GetProductByIdAsync(int id);
+    Task AddProductAsync(Product product);
+    Task UpdateProductAsync(Product product);
+    Task DeleteProductAsync(int id);
 }
